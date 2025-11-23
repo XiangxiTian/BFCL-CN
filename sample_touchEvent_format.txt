@@ -1,0 +1,23 @@
+# Sample format for touchEvent_0.txt file
+# This shows the expected structure of the input data
+
+# First line is header (skipped)
+Touch Event Data Log
+
+# Second line contains column names
+timestamp field1 field2 field3 field4 field5 field6 TYPE POSX POSY field10 bundleName field12 field13 field14
+
+# Data lines follow this format:
+# timestamp field1 field2 width height field5 timestamp_double type posX posY field10 bundleName field12 field13 field14
+1234567890 100 200 1080 1920 0 1234567890.123 1 540.5 960.3 0 com.amap.hmapp pkg1 act1 comp1
+1234567891 100 200 1080 1920 0 1234567891.456 2 542.1 961.2 0 com.amap.hmapp pkg1 act1 comp1
+1234567892 100 200 1080 1920 0 1234567892.789 3 543.7 962.5 0 com.amap.hmapp pkg1 act1 comp1
+1234567893 100 200 1080 1920 0 1234567893.012 1 100.2 200.4 0 com.amap.hmapp pkg1 act1 comp1
+1234567894 100 200 1080 1920 0 1234567894.345 3 102.5 201.8 0 com.amap.hmapp pkg1 act1 comp1
+
+# Notes:
+# - TYPE: 1 = touch start, 2 = move, 3 = touch end
+# - POSX, POSY: Touch coordinates on screen
+# - bundleName: Application package name
+# - field3, field4: Screen width and height (extracted from first event)
+# - Events are processed sequentially, eventID resets when bundleName changes
