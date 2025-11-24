@@ -1,0 +1,26 @@
+[
+  {
+    "label": "Weather & Climate",
+    "description": "Weather stations, meteorology, environment alerts, sensor-based climate intelligence."
+  },
+  {
+    "label": "Finance & Trading",
+    "description": "Equities, cryptocurrencies, portfolio analytics, economic indicators, tax & accounting APIs."
+  },
+  {
+    "label": "Commerce & Retail",
+    "description": "Shopping, order management, catalog search, logistics, payment orchestration."
+  },
+  {
+    "label": "Productivity & Knowledge",
+    "description": "Calendars, note-taking, wikis, enterprise knowledge bases, content summarization."
+  },
+  {
+    "label": "Travel & Mobility",
+    "description": "Flight search, hotel booking, ride hailing, route planning, vehicle telematics."
+  },
+  {
+    "label": "Smart Home & IoT",
+    "description": "Device control, energy monitoring, automation routines, home security sensors."
+  }
+]

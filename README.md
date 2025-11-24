@@ -259,6 +259,43 @@ For detailed steps, please see the [Contributing Guide](./CONTRIBUTING.md).
 - [Gorilla Discord](https://discord.gg/grXXvj9Whz) (`#leaderboard` channel)
 - [Project Website](https://gorilla.cs.berkeley.edu/)
 
+### C++ Tool Taxonomy Pipeline
+
+We now ship a standalone C++ utility under `cpp/tool_taxonomy` that classifies and clusters the BFCL tool catalog with Google’s Gemma 300M embeddings.
+
+- A dedicated `get_tool_list` helper recursively scans `data/` (including multi-turn doc folders) to gather every tool’s `name`, `description`, and `parameters`.
+- Each tool summary and the configured primary class descriptions are encoded through a Gemma 0.3B endpoint (default: `models/gemma-0.3b-embedder`). Cosine similarity assigns tools to the closest primary class, with any low-similarity tools routed to an `unassigned` bucket.
+- Within each class, the script clusters tool embeddings via k-means, yielding sub-groups sized according to `--target-cluster-size` (capped by `--max-clusters`).
+
+#### Build
+
+```bash
+cd /workspace
+cmake -S cpp/tool_taxonomy -B build/tool_taxonomy
+cmake --build build/tool_taxonomy
+```
+
+Install the usual prerequisites (`cmake`, a C++20 compiler, Boost headers, and `libcurl`).
+
+#### Configure & Run
+
+1. Author your primary classes JSON (see `config/primary_classes.sample.json` for the schema).
+2. Supply a Gemma embedding endpoint/API key. By default the program uses query-parameter auth with `GOOGLE_API_KEY`.
+3. Execute the pipeline:
+
+```bash
+GOOGLE_API_KEY=$API_KEY ./build/tool_taxonomy/tool_taxonomy \
+  --primary-classes config/primary_classes.sample.json \
+  --data-root data \
+  --output tool_clusters.json \
+  --min-class-sim 0.25 \
+  --target-cluster-size 10 \
+  --gemma-endpoint https://generativelanguage.googleapis.com/v1beta/models/gemma-0.3b-embedder:embedContent \
+  --gemma-model models/gemma-0.3b-embedder
+```
+
+Switch to header auth with `--auth-mode header --api-key-header x-goog-api-key --api-key-prefix ""` if required by your deployment. The resulting `tool_clusters.json` captures every class, its average similarity, the derived clusters, and the member tools (including source ids and complete parameter schemas).
+
 All the leaderboard statistics, and data used to train the models are released under Apache 2.0.
 Gorilla is an open source effort from UC Berkeley and we welcome contributors.
 Please email us your comments, criticisms, and questions. More information about the project can be found at [https://gorilla.cs.berkeley.edu/](https://gorilla.cs.berkeley.edu/)
