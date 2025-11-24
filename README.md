@@ -263,6 +263,38 @@ All the leaderboard statistics, and data used to train the models are released u
 Gorilla is an open source effort from UC Berkeley and we welcome contributors.
 Please email us your comments, criticisms, and questions. More information about the project can be found at [https://gorilla.cs.berkeley.edu/](https://gorilla.cs.berkeley.edu/)
 
+---
+
+## Tool Classification Utility (C++)
+
+The repository now includes a standalone C++ pipeline that groups all tool descriptions into high-level primary classes and clusters related tools using Gemma embeddings.
+
+### Building
+
+```bash
+cmake -S cpp -B cpp/build
+cmake --build cpp/build
+```
+
+The binary `tool_classifier` is placed in `cpp/build/`.
+
+### Running
+
+```bash
+GOOGLE_API_KEY=your_api_key \
+cpp/build/tool_classifier \
+  --tool-root data \
+  --primary-classes config/primary_classes.json \
+  --output result/tool_clusters.json \
+  --batch-size 8 \
+  --similarity-threshold 0.35
+```
+
+- `--tool-root` can point at any BFCL JSON file or directory (defaults to `data/`).
+- `--primary-classes` must reference a JSON list of top-level categories (see `config/primary_classes.json`).
+- A Google Generative AI key is required to access the Gemma 300M embedding endpoint; alternatively use `--offline` to generate deterministic synthetic embeddings for dry runs.
+- Results are written as structured JSON that includes similarity scores, per-class k-means clusters, and the set of tools that could not be confidently assigned to any class.
+
 <h2 id="chinese-evaluation-dataset">中文测评数据集</h2>
 
 我们还提供了中文测评数据集，包含了部分与英文数据集相同的功能调用能力评测。该数据集的设计和结构与英文数据集一致，旨在帮助研究人员和开发者评估中文大语言模型在函数调用方面的能力。

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "personal_profiles",
+    "name": "Personal Data & Profiles",
+    "description": "Tools that retrieve, update, or summarize information about people such as resumes, HR records, customer accounts, and personal histories."
+  },
+  {
+    "id": "travel_logistics",
+    "name": "Travel & Logistics",
+    "description": "Planning itineraries, booking tickets, managing reservations, and coordinating routes for transportation or deliveries."
+  },
+  {
+    "id": "commerce_finance",
+    "name": "Commerce & Finance",
+    "description": "Inventory, order management, payment processing, financial analytics, and any tool that surfaces monetary metrics."
+  },
+  {
+    "id": "productivity_knowledge",
+    "name": "Productivity & Knowledge",
+    "description": "Document management, messaging, project tracking, note taking, knowledge-base search, and analytics dashboards."
+  },
+  {
+    "id": "device_env_control",
+    "name": "Device & Environment Control",
+    "description": "Smart home, vehicle, robot, or infrastructure controls that issue commands or read sensor states."
+  },
+  {
+    "id": "developer_operations",
+    "name": "Developer & Ops Automation",
+    "description": "Coding assistants, CI/CD, deployment utilities, logging, observability, repository management, and system diagnostics."
+  }
+]
