@@ -1,0 +1,185 @@
+{
+  "timestamp": 1763967835,
+  "summary": {
+    "totalTools": 34,
+    "numPrimaryClasses": 6
+  },
+  "classes": [
+    {
+      "name": "Other",
+      "toolCount": 34,
+      "tools": [
+        {
+          "name": "file_reader",
+          "description": "Reads content from files on disk",
+          "subCluster": 0
+        },
+        {
+          "name": "file_writer",
+          "description": "Writes content to files",
+          "subCluster": 0
+        },
+        {
+          "name": "csv_parser",
+          "description": "Parses CSV files and extracts data",
+          "subCluster": 0
+        },
+        {
+          "name": "json_parser",
+          "description": "Parses JSON data structures",
+          "subCluster": 2
+        },
+        {
+          "name": "xml_parser",
+          "description": "Parses XML documents and extracts data",
+          "subCluster": 2
+        },
+        {
+          "name": "database_query",
+          "description": "Executes SQL database queries",
+          "subCluster": 2
+        },
+        {
+          "name": "data_transformer",
+          "description": "Transforms data between different formats",
+          "subCluster": 1
+        },
+        {
+          "name": "excel_reader",
+          "description": "Reads data from Excel spreadsheets",
+          "subCluster": 1
+        },
+        {
+          "name": "web_scraper",
+          "description": "Scrapes data from websites",
+          "subCluster": 2
+        },
+        {
+          "name": "api_caller",
+          "description": "Makes HTTP API calls to endpoints",
+          "subCluster": 1
+        },
+        {
+          "name": "graphql_client",
+          "description": "Executes GraphQL queries",
+          "subCluster": 0
+        },
+        {
+          "name": "email_sender",
+          "description": "Sends emails to recipients",
+          "subCluster": 0
+        },
+        {
+          "name": "slack_notifier",
+          "description": "Sends notifications to Slack channels",
+          "subCluster": 0
+        },
+        {
+          "name": "webhook_sender",
+          "description": "Sends data to webhook endpoints",
+          "subCluster": 0
+        },
+        {
+          "name": "mqtt_publisher",
+          "description": "Publishes messages to MQTT topics",
+          "subCluster": 1
+        },
+        {
+          "name": "text_analyzer",
+          "description": "Analyzes text content for insights",
+          "subCluster": 1
+        },
+        {
+          "name": "sentiment_analyzer",
+          "description": "Analyzes sentiment of text",
+          "subCluster": 0
+        },
+        {
+          "name": "image_processor",
+          "description": "Processes and manipulates images",
+          "subCluster": 0
+        },
+        {
+          "name": "ocr_scanner",
+          "description": "Extracts text from images",
+          "subCluster": 0
+        },
+        {
+          "name": "calculator",
+          "description": "Performs mathematical calculations",
+          "subCluster": 2
+        },
+        {
+          "name": "statistics_calculator",
+          "description": "Calculates statistical metrics",
+          "subCluster": 0
+        },
+        {
+          "name": "ml_predictor",
+          "description": "Makes predictions using ML models",
+          "subCluster": 2
+        },
+        {
+          "name": "weather_fetcher",
+          "description": "Gets weather information for locations",
+          "subCluster": 1
+        },
+        {
+          "name": "translation_service",
+          "description": "Translates text between languages",
+          "subCluster": 1
+        },
+        {
+          "name": "geocoding_service",
+          "description": "Converts addresses to coordinates",
+          "subCluster": 0
+        },
+        {
+          "name": "stock_price_fetcher",
+          "description": "Gets stock market prices",
+          "subCluster": 2
+        },
+        {
+          "name": "currency_converter",
+          "description": "Converts between currencies",
+          "subCluster": 1
+        },
+        {
+          "name": "logger",
+          "description": "Logs messages to various outputs",
+          "subCluster": 1
+        },
+        {
+          "name": "cache_manager",
+          "description": "Manages cache storage",
+          "subCluster": 1
+        },
+        {
+          "name": "scheduler",
+          "description": "Schedules tasks for execution",
+          "subCluster": 1
+        },
+        {
+          "name": "validator",
+          "description": "Validates data against schemas",
+          "subCluster": 1
+        },
+        {
+          "name": "formatter",
+          "description": "Formats data for display",
+          "subCluster": 1
+        },
+        {
+          "name": "uuid_generator",
+          "description": "Generates unique identifiers",
+          "subCluster": 2
+        },
+        {
+          "name": "hash_generator",
+          "description": "Generates hash values",
+          "subCluster": 2
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "modelPath": "gemma_300m.onnx",
+  "tokenizerPath": "tokenizer.json",
+  "numSubClusters": 3,
+  "similarityThreshold": 0.7,
+  "maxIterations": 100,
+  "convergenceThreshold": 0.001,
+  "primaryClasses": [
+    {
+      "name": "Data Processing",
+      "description": "Tools for reading, writing, querying, and manipulating data from various sources including files, databases, and APIs"
+    },
+    {
+      "name": "Communication",
+      "description": "Tools for sending messages, making network requests, email, notifications, and other communication protocols"
+    },
+    {
+      "name": "Analysis & Intelligence",
+      "description": "Tools for analyzing data, processing text, images, performing calculations, and extracting insights"
+    },
+    {
+      "name": "External Services",
+      "description": "Tools that interact with external APIs and services like weather, translation, and third-party integrations"
+    },
+    {
+      "name": "Utility & Helpers",
+      "description": "General utility tools, helpers, formatters, validators, and miscellaneous functionality"
+    },
+    {
+      "name": "Other",
+      "description": "Miscellaneous tools that don't fit into other categories"
+    }
+  ],
+  "embeddingDimension": 256,
+  "outputFile": "tool_classification_results.json",
+  "verbose": true,
+  "parallelProcessing": true,
+  "maxThreads": 4
+}
