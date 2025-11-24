@@ -34,6 +34,6 @@ void run_tool_clustering_pipeline(const std::string& data_path);
 // Helper functions exposed for modularity if needed
 std::vector<Tool> get_tool_list(const std::string& filepath);
 float cosine_similarity(const std::vector<float>& a, const std::vector<float>& b);
-void cluster_tools_kmeans(std::vector<Tool*>& tools, int k);
+void cluster_tools_dbscan(std::vector<Tool*>& tools, float eps, int min_pts);
 
 #endif // TOOL_CLUSTERER_H

@@ -1,4 +1,5 @@
 #include "ToolClusterer.h"
+#include "dbscan.h"
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -59,72 +60,30 @@ vector<Tool> get_tool_list(const string& filepath) {
     return tools;
 }
 
-void cluster_tools_kmeans(vector<Tool*>& tools, int k) {
-    if (tools.empty() || k <= 0) return;
-    if (k > tools.size()) k = tools.size();
+// Replace K-Means with DBSCAN
+void cluster_tools_dbscan(vector<Tool*>& tools, float eps, int min_pts) {
+    if (tools.empty()) return;
 
-    vector<vector<float>> centroids;
-    vector<int> centroid_indices;
-    for(int i=0; i<tools.size(); ++i) centroid_indices.push_back(i);
-    random_device rd;
-    mt19937 g(rd());
-    shuffle(centroid_indices.begin(), centroid_indices.end(), g);
-    
-    for(int i=0; i<k; ++i) {
-        centroids.push_back(tools[centroid_indices[i]]->embedding);
+    // Convert Tools to Points for DBSCAN
+    vector<Point> points;
+    points.reserve(tools.size());
+    for(size_t i=0; i<tools.size(); ++i) {
+        Point p;
+        p.embedding = tools[i]->embedding;
+        p.clusterID = UNCLASSIFIED;
+        p.originalIndex = i; // Store index to map back
+        points.push_back(p);
     }
 
-    bool changed = true;
-    int max_iters = 20;
-    int iter = 0;
+    // Run DBSCAN
+    DBSCAN dbscan(min_pts, eps, points);
+    dbscan.run();
 
-    while(changed && iter < max_iters) {
-        changed = false;
-        iter++;
-
-        // Assignment step
-        for(auto* t : tools) {
-            int best_cluster = -1;
-            float best_sim = -2.0f;
-
-            for(int c=0; c<k; ++c) {
-                float sim = cosine_similarity(t->embedding, centroids[c]);
-                if (sim > best_sim) {
-                    best_sim = sim;
-                    best_cluster = c;
-                }
-            }
-            if (t->cluster_id != best_cluster) {
-                t->cluster_id = best_cluster;
-                changed = true;
-            }
-        }
-
-        // Update step
-        vector<vector<float>> new_centroids(k, vector<float>(EMBEDDING_DIM, 0.0f));
-        vector<int> counts(k, 0);
-
-        for(auto* t : tools) {
-            if (t->cluster_id == -1) continue;
-            for(int i=0; i<EMBEDDING_DIM; ++i) {
-                new_centroids[t->cluster_id][i] += t->embedding[i];
-            }
-            counts[t->cluster_id]++;
-        }
-
-        for(int c=0; c<k; ++c) {
-            if (counts[c] > 0) {
-                float norm_sq = 0.0f;
-                for(int i=0; i<EMBEDDING_DIM; ++i) {
-                    new_centroids[c][i] /= counts[c];
-                    norm_sq += new_centroids[c][i] * new_centroids[c][i];
-                }
-                float norm = sqrt(norm_sq);
-                if (norm > 1e-6) {
-                    for(int i=0; i<EMBEDDING_DIM; ++i) new_centroids[c][i] /= norm;
-                }
-                centroids[c] = new_centroids[c];
-            }
+    // Map results back to Tools
+    // Note: DBSCAN::m_points is modified with clusterIDs
+    for(const auto& p : dbscan.m_points) {
+        if(p.originalIndex >= 0 && p.originalIndex < tools.size()) {
+            tools[p.originalIndex]->cluster_id = p.clusterID;
         }
     }
 }
@@ -185,27 +144,44 @@ void run_tool_clustering_pipeline(const string& data_path) {
         class_buckets[best_class].push_back(&tool);
     }
 
-    // 6. Within each primary class, further cluster tools
-    cout << "[STEP] Clustering within primary classes..." << endl;
+    // 6. Within each primary class, further cluster tools using DBSCAN
+    cout << "[STEP] Clustering within primary classes (DBSCAN)..." << endl;
+    
+    // DBSCAN Parameters
+    // Epsilon (Squared Euclidean Distance threshold)
+    // For normalized vectors, d^2 = 2(1 - cos_sim). 
+    // High dimensional random vectors are nearly orthogonal.
+    // If cos_sim is near 0, d^2 is near 2.
+    // To cluster random data, we need a very loose epsilon.
+    // In real data, semantic clusters are tighter.
+    float eps = 1.95f; 
+    int min_pts = 2;
+
     for (auto& [pclass, p_tools] : class_buckets) {
         if (p_tools.empty()) continue;
 
-        // Determine number of clusters
-        int k = max(2, (int)sqrt(p_tools.size())); 
-        if (p_tools.size() < 3) k = 1;
-
-        cout << "  > Class '" << pclass << "': " << p_tools.size() << " tools. Clustering into " << k << " groups..." << endl;
+        cout << "  > Class '" << pclass << "': " << p_tools.size() << " tools." << endl;
         
-        cluster_tools_kmeans(p_tools, k);
+        cluster_tools_dbscan(p_tools, eps, min_pts);
 
         // Display results
         map<int, vector<Tool*>> clusters;
         for(auto* t : p_tools) {
-            clusters[t->cluster_id].push_back(t);
+            // Check for noise
+            if (t->cluster_id == NOISE) {
+                clusters[-1].push_back(t); // -1 for noise
+            } else {
+                clusters[t->cluster_id].push_back(t);
+            }
         }
 
         for(auto& [cid, c_tools] : clusters) {
-            cout << "    - Cluster " << cid << " (" << c_tools.size() << " items):" << endl;
+            if (cid == -1) {
+                cout << "    - [NOISE/Unclustered] (" << c_tools.size() << " items)" << endl;
+            } else {
+                cout << "    - Cluster " << cid << " (" << c_tools.size() << " items):" << endl;
+            }
+            
             for(size_t i=0; i<min((size_t)3, c_tools.size()); ++i) {
                 cout << "      * " << c_tools[i]->name << endl;
             }
