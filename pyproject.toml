@@ -50,3 +50,7 @@ Repository = "https://github.com/ShishirPatil/gorilla/tree/main/berkeley-functio
 oss_eval_vllm = ["vllm==0.6.3"]
 oss_eval_sglang = ["sglang[all]"]
 wandb = ["wandb==0.18.5"]
+retrieval = [
+    "sentence-transformers>=2.2.0",
+    "scikit-learn>=1.0.0",
+]
