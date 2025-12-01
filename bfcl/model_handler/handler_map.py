@@ -13,6 +13,7 @@ from bfcl.model_handler.api_inference.nexus import NexusHandler
 from bfcl.model_handler.api_inference.nova import NovaHandler
 from bfcl.model_handler.api_inference.nvidia import NvidiaHandler
 from bfcl.model_handler.api_inference.openai import OpenAIHandler
+from bfcl.model_handler.api_inference.openai_topk import OpenAITopKHandler
 from bfcl.model_handler.api_inference.writer import WriterHandler
 from bfcl.model_handler.api_inference.yi import YiHandler
 from bfcl.model_handler.local_inference.bielik import BielikHandler
@@ -52,6 +53,9 @@ api_inference_handler_map = {
     "o3-mini-2025-01-31": OpenAIHandler,
     "gpt-4o-2024-11-20": OpenAIHandler,
     "gpt-4o-2024-11-20-FC": OpenAIHandler,
+    "gpt-4o-2024-11-20-FC-topk": OpenAITopKHandler,
+    "gpt-4o-2024-11-20-FC-topk-5": OpenAITopKHandler,
+    "gpt-4o-2024-11-20-FC-topk-10": OpenAITopKHandler,
     "gpt-4o-mini-2024-07-18": OpenAIHandler,
     "gpt-4o-mini-2024-07-18-FC": OpenAIHandler,
     "gpt-4-turbo-2024-04-09": OpenAIHandler,

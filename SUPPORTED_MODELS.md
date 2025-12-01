@@ -62,6 +62,9 @@ For model names containing `{...}`, multiple versions are available. For example
 | GPT-4.5-Preview-2025-02-27                     | Prompt           | OpenAI         | gpt-4.5-preview-2025-02-27                                  |
 | GPT-4o-2024-11-20                              | Function Calling | OpenAI         | gpt-4o-2024-11-20-FC                                        |
 | GPT-4o-2024-11-20                              | Prompt           | OpenAI         | gpt-4o-2024-11-20                                           |
+| GPT-4o-2024-11-20 + Top-K Retrieval            | Function Calling | OpenAI         | gpt-4o-2024-11-20-FC-topk                                   |
+| GPT-4o-2024-11-20 + Top-5 Retrieval            | Function Calling | OpenAI         | gpt-4o-2024-11-20-FC-topk-5                                 |
+| GPT-4o-2024-11-20 + Top-10 Retrieval            | Function Calling | OpenAI         | gpt-4o-2024-11-20-FC-topk-10                                |
 | GPT-4o-mini-2024-07-18                         | Function Calling | OpenAI         | gpt-4o-mini-2024-07-18-FC                                   |
 | GPT-4o-mini-2024-07-18                         | Prompt           | OpenAI         | gpt-4o-mini-2024-07-18                                      |
 | Granite-20b-FunctionCalling                    | Function Calling | Self-hosted 💻 | ibm-granite/granite-20b-functioncalling                     |
