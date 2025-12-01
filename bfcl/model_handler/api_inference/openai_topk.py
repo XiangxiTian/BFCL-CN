@@ -9,15 +9,15 @@ from bfcl.model_handler.utils import (
     convert_to_tool,
 )
 from bfcl.constants.type_mappings import GORILLA_TO_OPENAPI
+from overrides import override
 
 
 class OpenAITopKHandler(OpenAIHandler):
-    """OpenAI handler with top-k tool retrieval using semantic similarity."""
-    
-    def __init__(self, model_name: str, temperature: float, top_k: int = 10):
+    def __init__(self, model_name, temperature) -> None:
         super().__init__(model_name, temperature)
         
         # Extract top_k from model name if specified (e.g., "gpt-4o-topk-5" or "gpt-4o-topk")
+        top_k = 10  # Default value
         if "topk" in model_name.lower():
             try:
                 # Parse top_k from model name if format is "model-topk-N"
@@ -25,9 +25,6 @@ class OpenAITopKHandler(OpenAIHandler):
                 if len(parts) > 1:
                     # Extract number after "-topk-"
                     top_k = int(parts[1].split("-")[0])
-                elif model_name.lower().endswith("-topk"):
-                    # Default to 10 if just "-topk" without number
-                    pass
             except:
                 pass
         
@@ -85,6 +82,25 @@ class OpenAITopKHandler(OpenAIHandler):
         # Return top-k tools
         return [tools[i] for i in top_k_indices]
     
+    def _extract_user_query(self, test_entry: dict) -> str:
+        """Extract user query from test entry."""
+        question = test_entry.get("question", [])
+        if isinstance(question, list):
+            # For single-turn, get the first user message
+            if len(question) > 0 and isinstance(question[0], list):
+                # Multi-turn format
+                for msg_list in question:
+                    for msg in msg_list:
+                        if msg.get("role") == "user":
+                            return msg.get("content", "")
+            else:
+                # Single-turn format
+                for msg in question:
+                    if msg.get("role") == "user":
+                        return msg.get("content", "")
+        return ""
+
+    @override
     def _compile_tools(self, inference_data: dict, test_entry: dict) -> dict:
         """
         Override to add top-k retrieval before compiling tools.
@@ -108,21 +124,3 @@ class OpenAITopKHandler(OpenAIHandler):
         inference_data["retrieved_tools_count"] = len(functions)  # For logging
         
         return inference_data
-    
-    def _extract_user_query(self, test_entry: dict) -> str:
-        """Extract user query from test entry."""
-        question = test_entry.get("question", [])
-        if isinstance(question, list):
-            # For single-turn, get the first user message
-            if len(question) > 0 and isinstance(question[0], list):
-                # Multi-turn format
-                for msg_list in question:
-                    for msg in msg_list:
-                        if msg.get("role") == "user":
-                            return msg.get("content", "")
-            else:
-                # Single-turn format
-                for msg in question:
-                    if msg.get("role") == "user":
-                        return msg.get("content", "")
-        return ""
